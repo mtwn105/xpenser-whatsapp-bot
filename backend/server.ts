@@ -8,7 +8,7 @@ const axios = require("axios").default;
 const connectDB = require("./db");
 const expressStaticGzip = require("express-static-gzip");
 const { xss } = require("express-xss-sanitizer");
-const { verify } = require("jsonwebtoken");
+const { validateToken } = require("./jwt");
 
 const expensesRouter = require("./routes/expenses");
 const usersRouter = require("./routes/users");
@@ -41,10 +41,12 @@ app.use(helmet.hidePoweredBy());
 app.use(helmet.xssFilter());
 
 
-app.use("/api/expenses", expensesRouter);
-app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
 
+// add auth filter
+
+app.use("/api/users", validateToken, usersRouter);
+app.use("/api/expenses", validateToken, expensesRouter);
 
 app.get(
   "*.*",
@@ -55,22 +57,6 @@ app.get(
 app.all("*", function (req: Request, res: Response) {
   res.status(200).sendFile(`/`, { root: "public/client" });
 });
-
-// // auth filter to validate jwt token
-// app.use(async (req: Request, res: Response, next: NextFunction) => {
-//   const token = req.headers.authorization?.split(" ")[1];
-//   if (!token) {
-//     return res.status(401).json({ error: "No token provided" });
-//   }
-//   try {
-//     const decoded = verify(token, process.env.JWT_SECRET);
-//     req.user = decoded;
-//     next();
-//   } catch (err) {
-//     return res.status(401).json({ error: "Invalid token" });
-//   }
-//   return;
-// });
 
 
 // Error Handler

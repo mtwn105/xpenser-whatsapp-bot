@@ -10,6 +10,7 @@ const otpServiceId = process.env.TWILIO_VERIFY_SERVICE_ID;
 const client = require('twilio')(accountSid, authToken);
 
 const { User } = require("../schemas");
+const { generateToken } = require("../jwt");
 
 // create user
 authRouter.post("/otp/send", async (req: Request, res: Response) => {
@@ -42,8 +43,19 @@ authRouter.post("/otp/verify", async (req: Request, res: Response) => {
         currency: req.body.currency,
         name: req.body.name,
       });
+
+      const payload = {
+        id: user._id,
+        name: user.name,
+        whatsappNumber: user.whatsappNumber,
+        currency: user.currency
+      };
+
+      const token = generateToken(payload);
+
       return res.status(200).json({
-        message: "OTP verified successfully"
+        message: "OTP verified successfully",
+        token: token
       });
     } else {
       return res.status(400).json({
