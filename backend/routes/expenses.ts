@@ -29,7 +29,7 @@ expensesRouter.get("/:userId", async (req: Request, res: Response) => {
       });
     }
 
-    const expenses = await Expense.find({ user: userId })
+    const expenses = await Expense.find({ user: userId }).sort({ date: -1 })
     if (!expenses) {
       return res.status(404).send({
         error: "Expenses not found",
@@ -48,6 +48,8 @@ expensesRouter.get("/:userId", async (req: Request, res: Response) => {
 expensesRouter.post("/", async (req: Request, res: Response) => {
   try {
     const expense: IExpense = req.body;
+
+    console.log("Expense: ", expense);
 
     const token = req.headers['authorization']?.split(" ")[1]
     const authUser = getUser(token);

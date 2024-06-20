@@ -18,7 +18,7 @@ const User = db.model("User", user, "users");
 const expense = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   description: { type: String, required: true },
-  value: { type: Number, required: true },
+  amount: { type: Number, required: true },
   category: { type: String, required: true },
   subCategory: { type: String, required: true },
   date: { type: Date, default: Date.now },

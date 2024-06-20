@@ -9,8 +9,13 @@ function connectDB() {
     })
     .catch((error: Error) => {
       console.log("Connection to Database failed", error);
-      throw error;
+
     });
 }
+
+mongoose.connection.on('disconnected', () => {
+  console.error('MongoDB disconnected. Attempting to reconnect...');
+  connectDB();
+});
 
 module.exports = connectDB;
