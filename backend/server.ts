@@ -50,12 +50,12 @@ app.use("/api/expenses", validateToken, expensesRouter);
 
 app.get(
   "*.*",
-  expressStaticGzip("public/frontend", { serveStatic: { maxAge: "1y" } })
+  expressStaticGzip("public/browser", { serveStatic: { maxAge: "1y" } })
 );
 
 // serve frontend paths
 app.all("*", function (req: Request, res: Response) {
-  res.status(200).sendFile(`/`, { root: "public/frontend" });
+  res.status(200).sendFile(`/`, { root: "public/browser" });
 });
 
 
