@@ -1,19 +1,13 @@
 FROM node:18-alpine
 
-# WORKDIR /client
+WORKDIR /frontend
 
-# RUN mkdir client
+COPY /client/package.json .
+COPY /client/package-lock.json .
 
-# RUN ls -lart
+RUN cd /frontend
 
-# RUN pwd
-
-# COPY /client/package.json .
-# COPY /client/package-lock.json .
-
-# RUN cd /client
-
-# RUN npm install -g @angular/cli@12.0.1
+RUN npm install -g @angular/cli@17
 # RUN npm install
 
 # # RUN cd ..
@@ -22,7 +16,7 @@ FROM node:18-alpine
 
 # RUN export NODE_OPTIONS=--openssl-legacy-provider
 # # RUN cd /client
-# RUN ng build
+RUN ng build
 
 # RUN pwd
 
@@ -45,7 +39,7 @@ RUN npm run build
 
 # RUN pwd
 
-# RUN cp -R /client/dist/client /backend/public/.
+RUN cp -R /frontend/dist/frontend /backend/public/.
 
 EXPOSE 3000
 
