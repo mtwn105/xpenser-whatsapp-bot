@@ -1,0 +1,130 @@
+<div class="container is-max-widescreen has-text-centered  p-4 mt-6">
+  <p class="title my-auto has-text-primary is-size-1  ">
+    Sign Up
+  </p>
+  <p class="title is-size-2 mt-4 ">
+    Fill below details to get started
+  </p>
+  <!-- <p class="title is-size-4 mt-2 ">
+    Get started by signing up
+  </p>
+  <button class=" button is-link is-large mt-4">Sign Up</button> -->
+
+
+
+</div>
+
+<div class="container is-max-desktop p-4 mt-2">
+  <div class="box">
+
+    <div *ngIf="error" class="notification is-danger">
+      {{error}}
+    </div>
+
+    <ng-container *ngIf="!verifyOtp">
+
+
+
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control has-icons-left">
+          <input [(ngModel)]="name" class="input is-normal" type="text" placeholder="Enter your Name">
+          <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Country Code</label>
+        <div class="control has-icons-left">
+          <div class="select">
+            <select [(ngModel)]="selectedCountryCode">
+              @for (country of countries; track $index) {
+              <option [value]="country.dial_code">
+
+                {{ country.name }} ({{ country.dial_code }})
+              </option>
+              }
+
+            </select>
+            <span class="icon is-small is-left">
+              <i class="fas fa-solid fa-globe"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">WhatsApp Number</label>
+        <div class="control has-icons-left">
+          <input [(ngModel)]="whatsappNumber" class="input is-normal" type="tel"
+            placeholder="Enter your WhatsApp Number">
+          <span class="icon is-small is-left">
+            <i class="fas fa-brands fa-whatsapp"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Currency</label>
+        <div class="control has-icons-left">
+          <div class="select">
+            <select [(ngModel)]="selectedCurrencyCode">
+              @for (currency of currencyCodes; track $index) {
+              <option [value]="currency.currency_code">
+
+                {{ currency.country }} ({{ currency.currency_code }})
+              </option>
+              }
+
+            </select>
+            <span class="icon is-small is-left">
+              <i class="fas fa-solid fa-rupee-sign"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field has-text-centered mt-4">
+        <div class="control">
+          <button [ngClass]="{'is-loading': isLoading}" (click)="signUp()"
+            class="button is-primary is-medium  ">Submit</button>
+        </div>
+
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="verifyOtp">
+
+      <p class="title is-size-4 ">
+        Enter the otp you've received
+      </p>
+
+      <!-- <div class="field">
+        <label class="label">OTP</label>
+        <div class="control has-icons-left">
+          <input [(ngModel)]="otp" class="input is-normal" type="text" placeholder="Enter the otp">
+          <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+          </span>
+        </div>
+      </div> -->
+
+      <div class="otp-container">
+        <div class="field has-addons">
+          <div class="control" *ngFor="let digit of otp; let i = index">
+            <input class="input otp-input" type="text" maxlength="1" [(ngModel)]="otp[i]"
+              (keydown)="onKeyDown($event, i)" (input)="onInput($event, i)" (paste)="onPaste($event)">
+          </div>
+        </div>
+      </div>
+
+
+    </ng-container>
+
+
+  </div>
+
+</div>
