@@ -8,11 +8,11 @@ COPY /frontend/package-lock.json .
 RUN cd /frontend
 
 RUN npm install -g @angular/cli@17
-# RUN npm install
+RUN npm install
 
 # # RUN cd ..
 
-# COPY /client/. .
+COPY /frontend/. .
 
 # RUN export NODE_OPTIONS=--openssl-legacy-provider
 # # RUN cd /client
@@ -39,7 +39,7 @@ RUN npm run build
 
 # RUN pwd
 
-RUN cp -R /frontend/dist/frontend /backend/public/.
+RUN cp -R /frontend/dist/frontend/browser /backend/public/.
 
 EXPOSE 3000
 
