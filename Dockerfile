@@ -2,8 +2,8 @@ FROM node:18-alpine
 
 WORKDIR /frontend
 
-COPY /client/package.json .
-COPY /client/package-lock.json .
+COPY /frontend/package.json .
+COPY /frontend/package-lock.json .
 
 RUN cd /frontend
 
