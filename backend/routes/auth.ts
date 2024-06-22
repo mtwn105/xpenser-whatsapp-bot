@@ -33,12 +33,61 @@ authRouter.post("/otp/send", async (req: Request, res: Response) => {
 authRouter.post("/otp/verify", async (req: Request, res: Response) => {
   try {
 
+    const newUser = req.query.newUser;
+
+    if (newUser === "true") {
+      if (!req.body.phonenumber || !req.body.code || !req.body.currency || !req.body.name) {
+        return res.status(400).json({
+          message: "Please provide all the details"
+        });
+      }
+    } else {
+      if (!req.body.phonenumber || !req.body.code) {
+        return res.status(400).json({
+          message: "Please provide all the details"
+        });
+      }
+    }
+
     const verification = await client.verify.v2.services(otpServiceId)
       .verificationChecks
       .create({ to: req.body.phonenumber, code: req.body.code })
 
     if (verification?.status === "approved") {
-      const user = await User.create({
+
+      // check if user already exists
+      let user = await User.findOne({ whatsappNumber: req.body.phonenumber });
+      if (user) {
+
+        if (newUser === "true") {
+          return res.status(424).json({
+            error: "User already exists",
+            message: "User already exists",
+          });
+        }
+
+        const payload = {
+          id: user._id,
+          name: user.name,
+          whatsappNumber: user.whatsappNumber,
+          currency: user.currency
+        };
+
+        const token = generateToken(payload);
+
+        return res.status(200).json({
+          message: "OTP verified successfully",
+          token: token,
+          user: {
+            id: user._id,
+            name: user.name,
+            phonenumber: user.whatsappNumber,
+            currency: user.currency
+          }
+        });
+      }
+
+      user = await User.create({
         whatsappNumber: req.body.phonenumber,
         currency: req.body.currency,
         name: req.body.name,

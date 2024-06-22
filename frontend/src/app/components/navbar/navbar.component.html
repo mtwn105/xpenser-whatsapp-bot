@@ -17,14 +17,16 @@
 
     </div>
   </div>
-  <!-- <div class="navbar-end">
-    <div class="navbar-item">
+  <div class="navbar-end">
+    <a *ngIf="authService.isLoggedIn" class="navbar-item">
+      {{authService.loggedInUser?.name}}
+    </a>
+    <div *ngIf="authService.isLoggedIn" class="navbar-item">
       <div class="buttons">
-        <a class="button is-primary">
-          <strong>Sign up</strong>
+        <a (click)="authService.logout()" class="button is-danger">
+          <strong>Sign out</strong>
         </a>
-
       </div>
     </div>
-  </div> -->
+  </div>
 </nav>

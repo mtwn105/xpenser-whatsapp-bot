@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
         opacity: 1
       })),
       transition('start => end', [
-        animate('1s ease-in-out')
+        animate('0.5s ease-in-out')
       ])
     ])
   ]
@@ -40,6 +40,9 @@ export class HomeComponent {
 
   signUp() {
     this.router.navigate(['/signup']);
+  }
+  signIn() {
+    this.router.navigate(['/signin']);
   }
 
 }

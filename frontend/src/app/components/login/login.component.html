@@ -1,9 +1,9 @@
 <div class="container is-max-widescreen has-text-centered  p-4 mt-6">
   <p class="title my-auto has-text-primary is-size-1  ">
-    Sign Up
+    Sign In
   </p>
   <p *ngIf="!verifyOtp" class="title is-size-2 mt-4 ">
-    Fill below details to get started
+    Fill below details to login
   </p>
   <p *ngIf="verifyOtp" class="title is-size-2 mt-4 ">
     Enter the otp you've received
@@ -28,15 +28,7 @@
 
 
 
-      <div class="field">
-        <label class="label">Name</label>
-        <div class="control has-icons-left">
-          <input [(ngModel)]="name" class="input is-normal" type="text" placeholder="Enter your Name">
-          <span class="icon is-small is-left">
-            <i class="fas fa-user"></i>
-          </span>
-        </div>
-      </div>
+
 
       <div class="field">
         <label class="label">Country Code</label>
@@ -69,29 +61,9 @@
         </div>
       </div>
 
-      <div class="field">
-        <label class="label">Currency</label>
-        <div class="control has-icons-left">
-          <div class="select">
-            <select [(ngModel)]="selectedCurrencyCode">
-              @for (currency of currencyCodes; track $index) {
-              <option [value]="currency.currency_code">
-
-                {{ currency.country }} ({{ currency.currency_code }})
-              </option>
-              }
-
-            </select>
-            <span class="icon is-small is-left">
-              <i class="fas fa-solid fa-rupee-sign"></i>
-            </span>
-          </div>
-        </div>
-      </div>
-
       <div class="field has-text-centered mt-4">
         <div class="control">
-          <button [ngClass]="{'is-loading': isLoading}" (click)="signUp()"
+          <button [ngClass]="{'is-loading': isLoading}" (click)="signIn()"
             class="button is-primary is-medium  ">Submit</button>
         </div>
 

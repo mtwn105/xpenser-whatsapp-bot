@@ -14,12 +14,16 @@ export class AuthService {
     return this.http.post(environment.backendUrl + '/api/auth/otp/send', { phonenumber });
   }
 
-  verifyOtp(phonenumber: string, otp: string) {
-    return this.http.post(environment.backendUrl + '/api/auth/otp/verify', { phonenumber, otp });
+  verifyOtp(data: any, newUser: boolean = false) {
+    return this.http.post(environment.backendUrl + '/api/auth/otp/verify' + '?newUser=' + newUser, data);
   }
 
   get loggedInUser() {
     return localStorage.getItem('loggedInUser') ? JSON.parse(localStorage.getItem('loggedInUser') as string) : null;
+  }
+
+  get isLoggedIn() {
+    return this.loggedInUser !== null;
   }
 
   loginUser(user: any, token: string) {
