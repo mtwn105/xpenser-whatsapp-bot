@@ -10,6 +10,7 @@ const expressStaticGzip = require("express-static-gzip");
 const { xss } = require("express-xss-sanitizer");
 const { validateToken } = require("./jwt");
 
+const analyticsRouter = require("./routes/analytics");
 const expensesRouter = require("./routes/expenses");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
@@ -47,6 +48,7 @@ app.use("/api/auth", authRouter);
 
 app.use("/api/users", validateToken, usersRouter);
 app.use("/api/expenses", validateToken, expensesRouter);
+app.use("/api/analytics", validateToken, analyticsRouter);
 
 app.get(
   "*.*",

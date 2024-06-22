@@ -29,7 +29,8 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
           // auto logout if 401 response returned from api
           toasterService.notify('You are not authorized to access this page. Please login again.', 'is-danger')
           authService.logout();
-          router.navigate(['/login']);
+          router.navigate(['/signin']);
+          return caught;
         }
       }
 

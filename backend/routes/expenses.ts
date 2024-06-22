@@ -6,7 +6,7 @@ const { getUser } = require("../jwt")
 const expensesRouter = express.Router();
 
 
-expensesRouter.get("/:userId", async (req: Request, res: Response) => {
+expensesRouter.get("/user/:userId", async (req: Request, res: Response) => {
 
   try {
     const userId = req.params.userId;
@@ -38,6 +38,27 @@ expensesRouter.get("/:userId", async (req: Request, res: Response) => {
     }
 
     return res.json(expenses);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+});
+
+expensesRouter.get("/:expenseId", async (req: Request, res: Response) => {
+
+  try {
+
+    const expenseId = req.params.expenseId;
+
+    const expense = await Expense.findById(expenseId);
+    if (!expense) {
+      return res.status(404).send({
+        error: "Expense not found",
+        message: "Expense not found"
+      });
+    }
+
+    return res.json(expense);
   } catch (err) {
     console.error(err);
     return res.status(500).send(err);

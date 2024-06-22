@@ -7,17 +7,18 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item">
+      <a *ngIf="authService.isLoggedIn" class="navbar-item">
         Home
       </a>
 
-      <a class="navbar-item">
+      <a *ngIf="authService.isLoggedIn" class="navbar-item">
         Expenses
       </a>
 
     </div>
   </div>
-  <div class="navbar-end">
+  <div class="navbar-end navbar-menu">
+    <app-avatar *ngIf="authService.isLoggedIn" [name]="authService.loggedInUser?.name"></app-avatar>
     <a *ngIf="authService.isLoggedIn" class="navbar-item">
       {{authService.loggedInUser?.name}}
     </a>

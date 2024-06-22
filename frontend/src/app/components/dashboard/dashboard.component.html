@@ -1,5 +1,5 @@
-<div class="container  p-4 mt-6">
-  <p class="title my-auto has-text-primary is-size-1  ">
+<div class="container   p-2 mt-2">
+  <p class="title my-auto has-text-primary is-size-2 my-2 ">
     Dashboard
   </p>
   <!-- <p  class="title is-size-2 mt-4 ">
@@ -12,7 +12,99 @@
     Get started by signing up
   </p>
   <button class=" button is-link is-large mt-4">Sign Up</button> -->
+  <div class="fixed-grid has-1-cols-mobile has-2-cols-tablet has-3-cols-desktop">
+    <div class="grid is-col-min-4 mt-4 my-2 gap-2">
+      <div class="cell">
+        <div class="box">
+          <div class="is-flex is-justify-content-space-between">
+            <div class="mr-4 is-flex-direction-column is-align-items-center ml-4 is-align-items-center is-vertical">
+              <span class="icon is-large">
+                <i class="fas fa-solid fa-4x fa-chart-line "></i>
+              </span>
+            </div>
+            <div class="ml-4 is-flex-grow-1">
+              <div class="row">
+                <p class="is-size-5 is-inline has-text-weight-bold">Total Expenses</p>
+              </div>
+              <div class="row">
+                <p class="has-text-primary is-size-2"> {{dashboardData?.totalThisMonth | currency:
+                  authService.loggedInUser?.currency}}</p>
+                <p [class.has-text-danger]="dashboardData?.totalChange > 0"
+                  [class.has-text-success]="dashboardData?.totalChange < 0" class=" is-size-6">
+                  <span [class.has-text-danger]="dashboardData?.totalChange > 0"
+                    [class.has-text-success]="dashboardData?.totalChange < 0" class="icon ">
+                    <i [class.fa-arrow-up]="dashboardData?.totalChange > 0"
+                      [class.fa-arrow-down]="dashboardData?.totalChange < 0" class="fas fa-solid "></i>
+                  </span>
+                  {{dashboardData?.totalChange}}% since last month
+                </p>
+              </div>
+            </div>
+          </div>
 
 
+        </div>
+      </div>
+      <div class="cell">
+        <div class="box">
+          <div class="is-flex is-justify-content-space-between">
+            <div class="mr-4 is-flex-direction-column is-align-items-center ml-4 is-align-items-center is-vertical">
+              <span class="icon is-large">
+                <i class="fas fa-solid fa-4x fa-list "></i>
+              </span>
+            </div>
+            <div class="ml-4 is-flex-grow-1">
+              <div class="row">
+                <p class="is-size-5 is-inline has-text-weight-bold">Top Category</p>
+              </div>
+              <div class="row">
+                <p class="has-text-primary is-size-2">{{dashboardData?.topCategory}}</p>
+                <p class=" is-size-6 ">
+                  {{dashboardData?.topCategoryAmount | currency:
+                  authService.loggedInUser?.currency}} this month
+                </p>
+              </div>
 
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="cell">
+        <div class="box">
+          <div class="is-flex is-justify-content-space-between">
+            <div class="mr-4 is-flex-direction-column is-align-items-center ml-4 is-align-items-center is-vertical">
+              <span class="icon is-large">
+                <i class="fas fa-solid fa-4x fa-list "></i>
+              </span>
+            </div>
+            <div class="ml-4 is-flex-grow-1">
+              <div class="row">
+                <p class="is-size-5 is-inline has-text-weight-bold">Average Spend per Day</p>
+              </div>
+              <div class="row">
+                <p class="has-text-primary is-size-2"> {{dashboardData?.averageExpenseThisMonth | currency:
+                  authService.loggedInUser?.currency}}</p>
+                <p [class.has-text-danger]="dashboardData?.averageExpenseChange > 0"
+                  [class.has-text-success]="dashboardData?.averageExpenseChange < 0" class=" is-size-6">
+                  <span [class.has-text-danger]="dashboardData?.averageExpenseChange > 0"
+                    [class.has-text-success]="dashboardData?.averageExpenseChange < 0" class="icon ">
+                    <i [class.fa-arrow-up]="dashboardData?.averageExpenseChange > 0"
+                      [class.fa-arrow-down]="dashboardData?.averageExpenseChange < 0" class="fas fa-solid "></i>
+                  </span>
+                  {{dashboardData?.averageExpenseChange}}% since last month
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
 </div>
