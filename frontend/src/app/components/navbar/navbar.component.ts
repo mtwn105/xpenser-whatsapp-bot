@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { AvatarComponent } from '../avatar/avatar.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,15 @@ import { AvatarComponent } from '../avatar/avatar.component';
 })
 export class NavbarComponent {
 
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, private router: Router) { }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  goToHome() {
+    this.router.navigate(['/dashboard']);
+  }
 
 }

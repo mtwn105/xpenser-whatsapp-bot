@@ -1,7 +1,10 @@
 <div class="container   p-2 mt-2">
-  <p class="title my-auto has-text-primary is-size-2 my-2 ">
-    Dashboard
-  </p>
+  <div class="is-flex is-justify-content-space-between">
+    <p class="title my-auto has-text-primary is-size-2 my-2 ">
+      Dashboard
+    </p>
+    <button (click)="createExpense()" class="button is-primary ml-2">Add Expense</button>
+  </div>
   <!-- <p  class="title is-size-2 mt-4 ">
     Fill below details to get started
   </p>
@@ -13,11 +16,12 @@
   </p>
   <button class=" button is-link is-large mt-4">Sign Up</button> -->
   <div class="fixed-grid has-1-cols-mobile has-2-cols-tablet has-3-cols-desktop">
-    <div class="grid is-col-min-4 mt-4 my-2 gap-2">
+    <div class="grid is-col-min-4 mt-5 my-2 gap-2">
       <div class="cell">
         <div class="box">
           <div class="is-flex is-justify-content-space-between">
-            <div class="mr-4 is-flex-direction-column is-align-items-center ml-4 is-align-items-center is-vertical">
+            <div
+              class="mr-4  mt-5 is-flex-direction-column is-align-items-center ml-4 is-align-items-center is-vertical">
               <span class="icon is-large">
                 <i class="fas fa-solid fa-4x fa-chart-line "></i>
               </span>
@@ -48,7 +52,8 @@
       <div class="cell">
         <div class="box">
           <div class="is-flex is-justify-content-space-between">
-            <div class="mr-4 is-flex-direction-column is-align-items-center ml-4 is-align-items-center is-vertical">
+            <div
+              class="mr-4  mt-5 is-flex-direction-column is-align-items-center ml-4 is-align-items-center is-vertical">
               <span class="icon is-large">
                 <i class="fas fa-solid fa-4x fa-list "></i>
               </span>
@@ -74,9 +79,10 @@
       <div class="cell">
         <div class="box">
           <div class="is-flex is-justify-content-space-between">
-            <div class="mr-4 is-flex-direction-column is-align-items-center ml-4 is-align-items-center is-vertical">
+            <div
+              class="mr-4 mt-5 is-flex-direction-column is-align-items-center ml-4 is-align-items-center is-vertical">
               <span class="icon is-large">
-                <i class="fas fa-solid fa-4x fa-list "></i>
+                <i class="fas fa-solid fa-4x fa-calculator "></i>
               </span>
             </div>
             <div class="ml-4 is-flex-grow-1">
@@ -104,6 +110,46 @@
 
 
       </div>
+    </div>
+
+  </div>
+  <div class="fixed-grid has-1-cols-mobile has-2-cols-tablet">
+    <div class="grid is-col-min-4 mt-2 my-2 gap-2">
+      <div class="cell">
+        <div class="box chart-box">
+
+          <div class="">
+            <div class="row">
+              <p class="is-size-5 is-inline has-text-weight-bold">Daily Spending Trend</p>
+            </div>
+            <div class="row">
+              <canvas baseChart height="55px" width="100%" [options]="barChartOptions" [data]="expenseChartOptions"
+                type="bar">
+              </canvas>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="cell">
+        <div class="box chart-box">
+
+          <div class="">
+            <div class="row">
+              <p class="is-size-5 is-inline has-text-weight-bold">Category Split</p>
+            </div>
+            <div class="row is-flex category-chart is-justify-content-center">
+              <canvas baseChart width="100%" [options]="categoryChartOptions" [data]="categoryChartData" type="pie">
+              </canvas>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
   </div>

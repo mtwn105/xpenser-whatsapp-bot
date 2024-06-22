@@ -1,0 +1,82 @@
+<div class="container is-max-widescreen has-text-centered  p-4 mt-6">
+  <p class="title my-auto has-text-primary is-size-1  ">
+    Expense
+  </p>
+  <p class="title is-size-2 mt-4 ">
+    Fill below details to log an expense
+  </p>
+  <!-- <p class="title is-size-4 mt-2 ">
+    Get started by signing up
+  </p>
+  <button class=" button is-link is-large mt-4">Sign Up</button> -->
+
+
+
+</div>
+
+<div class="container is-max-desktop p-4 mt-2">
+  <div class="box">
+    <form [formGroup]="expenseForm">
+      <div class="field">
+        <label class="label">Description</label>
+        <div class="control has-icons-left">
+          <input formControlName="description" class="input is-normal" type="text" placeholder="Enter Description">
+          <span class="icon is-small is-left">
+            <i class="fas fa-file-pen"></i>
+          </span>
+        </div>
+      </div>
+
+      <!-- <div class="field">
+        <label class="label">Country Code</label>
+        <div class="control has-icons-left">
+          <div class="select">
+            <select [(ngModel)]="selectedCountryCode">
+              @for (country of countries; track $index) {
+              <option [value]="country.dial_code">
+
+                {{ country.name }} ({{ country.dial_code }})
+              </option>
+              }
+
+            </select>
+            <span class="icon is-small is-left">
+              <i class="fas fa-solid fa-globe"></i>
+            </span>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="field">
+        <label class="label">Amount</label>
+        <div class="control has-icons-left">
+          <input formControlName="amount" class="input is-normal" type="number" placeholder="Enter expense amount">
+          <span class="icon is-small is-left">
+            <i class="fas fa-solid fa-hashtag"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Date</label>
+        <div class="control has-icons-left">
+          <input formControlName="date" class="input is-normal" type="date"
+            placeholder="Enter expense date in MM/DD/YYYY">
+          <span class="icon is-small is-left">
+            <i class="fas fa-solid fa-hashtag"></i>
+          </span>
+        </div>
+      </div>
+      <div class="field has-text-centered mt-4">
+        <div class="control">
+          <button [class.is-loading]="isLoading" (click)="saveExpense()" class="button is-primary is-medium  ">Save
+            Expense</button>
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

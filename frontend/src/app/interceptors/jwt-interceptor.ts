@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpInterceptorFn } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable, catchError } from "rxjs";
+import { Observable, catchError, throwError } from "rxjs";
 import { AuthService } from "../services/auth.service";
 import { ToasterService } from "../services/toaster.service";
 
@@ -30,13 +30,13 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
           toasterService.notify('You are not authorized to access this page. Please login again.', 'is-danger')
           authService.logout();
           router.navigate(['/signin']);
-          return caught;
+
         }
       }
 
       // If there is an error, log the error and then pass it along
       console.error("There was an error: ", err);
-      return caught;
+      return throwError(() => err);
     })
   );
 };

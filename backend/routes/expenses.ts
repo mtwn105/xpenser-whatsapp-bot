@@ -4,7 +4,7 @@ const express = require("express");
 const { User, Expense } = require("../schemas");
 const { getUser } = require("../jwt")
 const expensesRouter = express.Router();
-
+const { getCategories } = require("../ai")
 
 expensesRouter.get("/user/:userId", async (req: Request, res: Response) => {
 
@@ -89,6 +89,40 @@ expensesRouter.post("/", async (req: Request, res: Response) => {
         error: "User not found",
         message: "User not found",
       });
+    }
+
+    if (!expense.description) {
+      return res.status(400).send({
+        error: "Description is required",
+        message: "Description is required",
+      });
+    }
+
+    if (!expense.amount) {
+      return res.status(400).send({
+        error: "Amount is required",
+        message: "Amount is required",
+      });
+    }
+
+    if (!expense.date) {
+      return res.status(400).send({
+        error: "Date is required",
+        message: "Date is required",
+      });
+    }
+
+    if (!expense.category || expense.category === "" || !expense.subCategory || expense.subCategory === "") {
+      // Use AI to get category
+      const aiCategories = await getCategories(expense.description)
+      console.log("AI Categories: ", aiCategories)
+      if (aiCategories) {
+        expense.category = aiCategories.category ? aiCategories.category : "Others"
+        expense.subCategory = aiCategories.subCategory ? aiCategories.subCategory : "Others"
+      } else {
+        expense.category = "Others"
+        expense.subCategory = "Others"
+      }
     }
 
     const newExpense = await Expense.create(expense);

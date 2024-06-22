@@ -1,30 +1,29 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item has-text-weight-bold has-text-white">
+    <a (click)="goToHome()" class="navbar-item has-text-weight-bold has-text-white">
       Xpenser
     </a>
+
   </div>
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a *ngIf="authService.isLoggedIn" class="navbar-item">
+      <a (click)="goToHome()" *ngIf="authService.isLoggedIn" class="navbar-item">
         Home
-      </a>
-
-      <a *ngIf="authService.isLoggedIn" class="navbar-item">
-        Expenses
       </a>
 
     </div>
   </div>
   <div class="navbar-end navbar-menu">
-    <app-avatar *ngIf="authService.isLoggedIn" [name]="authService.loggedInUser?.name"></app-avatar>
-    <a *ngIf="authService.isLoggedIn" class="navbar-item">
+    <app-avatar class="" *ngIf="authService.isLoggedIn" [name]="authService.loggedInUser?.name"></app-avatar>
+    <a *ngIf="authService.isLoggedIn" class="navbar-item ">
       {{authService.loggedInUser?.name}}
     </a>
+  </div>
+  <div class="navbar-end">
     <div *ngIf="authService.isLoggedIn" class="navbar-item">
       <div class="buttons">
-        <a (click)="authService.logout()" class="button is-danger">
+        <a (click)="logout()" class="button is-danger">
           <strong>Sign out</strong>
         </a>
       </div>
