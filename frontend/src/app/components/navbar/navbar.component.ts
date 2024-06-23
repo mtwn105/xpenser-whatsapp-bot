@@ -24,4 +24,8 @@ export class NavbarComponent {
     this.router.navigate(['/dashboard']);
   }
 
+  goToExpenses() {
+    this.router.navigate(['/expenses']);
+  }
+
 }

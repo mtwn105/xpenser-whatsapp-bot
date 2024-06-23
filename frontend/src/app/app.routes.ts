@@ -5,6 +5,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { authGuard } from './guard/auth.guard';
 import { LoginComponent } from './components/login/login.component';
 import { ExpenseComponent } from './components/expense/expense.component';
+import { ExpensesComponent } from './components/expenses/expenses.component';
 
 export const routes: Routes = [
   {
@@ -33,6 +34,10 @@ export const routes: Routes = [
   }, {
     path: 'expense',
     component: ExpenseComponent,
+    canActivate: [authGuard]
+  }, {
+    path: 'expenses',
+    component: ExpensesComponent,
     canActivate: [authGuard]
   }
 ];

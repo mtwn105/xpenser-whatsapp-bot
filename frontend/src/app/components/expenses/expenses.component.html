@@ -1,0 +1,68 @@
+<div class="container   p-2 mt-2">
+  <div class="is-flex is-justify-content-space-between">
+    <p class="title my-auto has-text-primary is-size-2 my-2 ">
+      Expenses
+    </p>
+    <button (click)="createExpense()" class="button is-primary ml-2">Add Expense</button>
+  </div>
+
+  <div class="box mt-5 chart-box">
+
+    <div class="">
+      <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+
+          <tr>
+            <th class="is-primary has-text-black">Date</th>
+            <th class="is-primary has-text-black">Description</th>
+            <th class="is-primary has-text-black">Category</th>
+            <th class="is-primary has-text-black">Sub Category</th>
+            <th class="is-primary has-text-black">Amount</th>
+            <th class="is-primary has-text-black"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (expense of expenseTable; track $index) {
+          <tr>
+            <td>{{expense.date | date: 'yyyy-MM-dd'}}</td>
+            <td>{{expense.description}}</td>
+            <td>{{expense.category}}</td>
+            <td>{{expense.subCategory}}</td>
+            <td>{{expense.amount | currency:
+              authService.loggedInUser?.currency}}</td>
+            <td>
+              <p class="buttons">
+                <button class="button is-small is-link">
+                  <span class="icon is-small">
+                    <i class="fas fa-solid fa-pen-to-square"></i>
+                  </span>
+                </button>
+                <button class="button is-small is-danger">
+                  <span class="icon is-small">
+                    <i class="fas fa-solid fa-trash"></i>
+                  </span>
+                </button>
+              </p>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      <nav class="pagination" role="navigation" aria-label="pagination">
+        <a [class.is-disabled]="selectedPage == 1" (click)="previousPage()" class="pagination-previous">Previous</a>
+        <a [class.is-disabled]="selectedPage == pages.length" (click)="nextPage()" class="pagination-next">Next page</a>
+        <ul class="pagination-list">
+          @for (page of pages; track $index) {
+          <li>
+            <a (click)="goToPage(page)" [class.is-current]="selectedPage == page"
+              class="pagination-link is-current">{{page}}</a>
+          </li>
+          }
+
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+
+</div>

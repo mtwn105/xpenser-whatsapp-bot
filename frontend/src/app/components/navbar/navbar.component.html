@@ -11,7 +11,9 @@
       <a (click)="goToHome()" *ngIf="authService.isLoggedIn" class="navbar-item">
         Home
       </a>
-
+      <a (click)="goToExpenses()" *ngIf="authService.isLoggedIn" class="navbar-item">
+        Expenses
+      </a>
     </div>
   </div>
   <div class="navbar-end navbar-menu">
