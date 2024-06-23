@@ -66,7 +66,7 @@ analyticsRouter.get("/dashboard/overview/:userId", async (req: Request, res: Res
       dashboardData.totalPreviousMonth = 0
     }
 
-    let totalChange = 100
+    let totalChange = 0
     if (dashboardData.totalPreviousMonth > 0) {
       totalChange = (dashboardData.totalThisMonth - dashboardData.totalPreviousMonth) / dashboardData.totalPreviousMonth * 100
     }
@@ -115,7 +115,7 @@ analyticsRouter.get("/dashboard/overview/:userId", async (req: Request, res: Res
     if (averageExpensePreviousMonth > 0) {
       dashboardData.averageExpenseChange = Number((averageExpenseThisMonth - averageExpensePreviousMonth) / averageExpensePreviousMonth * 100).toFixed(2)
     } else {
-      dashboardData.averageExpenseChange = 100
+      dashboardData.averageExpenseChange = averageExpenseThisMonth > 0 ? 100 : 0
     }
 
     const last30Days = new Date();

@@ -110,6 +110,7 @@ export class DashboardComponent {
     ],
 
   };
+  categoryData: any;
 
   constructor(private router: Router, public authService: AuthService, private toasterService: ToasterService, private dashboardService: DashboardService) { }
 
@@ -146,7 +147,7 @@ export class DashboardComponent {
     this.dashboardService.getDashboardCategoryChart(this.authService.loggedInUser.id).subscribe(
       {
         next: (data: any) => {
-          // this. = data;
+          this.categoryData = data;
           this.categoryChartData.labels = data.labels;
           this.categoryChartData.datasets[0].data = data.data;
           console.log(data);

@@ -147,10 +147,14 @@
             <div class="row">
               <p class="is-size-5 is-inline has-text-weight-bold">Category Split</p>
             </div>
-            <div class="row is-flex category-chart is-justify-content-center">
+            <div *ngIf="categoryData && categoryData.data?.length > 0"
+              class="row is-flex category-chart is-justify-content-center">
               <canvas baseChart width="100%" [options]="categoryChartOptions" [data]="categoryChartData" type="pie">
               </canvas>
 
+            </div>
+            <div *ngIf="!categoryData || categoryData.data?.length == 0" class="m-auto ">
+              <p class="has-text-primary is-size-2 has-text-centered my-auto py-auto">No Data</p>
             </div>
           </div>
 

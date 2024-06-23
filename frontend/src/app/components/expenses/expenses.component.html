@@ -50,7 +50,8 @@
       </table>
       <nav class="pagination" role="navigation" aria-label="pagination">
         <a [class.is-disabled]="selectedPage == 1" (click)="previousPage()" class="pagination-previous">Previous</a>
-        <a [class.is-disabled]="selectedPage == pages.length" (click)="nextPage()" class="pagination-next">Next page</a>
+        <a [class.is-disabled]="selectedPage == pages.length || pages.length == 0" (click)="nextPage()"
+          class="pagination-next">Next page</a>
         <ul class="pagination-list">
           @for (page of pages; track $index) {
           <li>
