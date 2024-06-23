@@ -5,6 +5,10 @@
     </p>
     <button (click)="createExpense()" class="button is-primary ml-2">Add Expense</button>
   </div>
+  <div class="notification is-success mt-5">
+    <p>To Manage Your Expenses on WhatsApp: <a href="https://wa.me/+14155238886" target="_blank" class=""><b>Click
+          Here</b></a> </p>
+  </div>
   <div *ngIf="dashboardData?.insights" class="notification is-info mt-5">
     <button (click)="dashboardData.insights = null" class="delete"></button>
     <p><b>💡Insight:</b> {{dashboardData?.insights}}</p>
@@ -19,7 +23,7 @@
     Get started by signing up
   </p>
   <button class=" button is-link is-large mt-4">Sign Up</button> -->
-  <div [class.mt-5]="!dashboardData.insights" class="fixed-grid has-1-cols-mobile has-2-cols-tablet has-3-cols-desktop">
+  <div class="fixed-grid has-1-cols-mobile has-2-cols-tablet has-3-cols-desktop">
     <div class="grid is-col-min-4 mt-2 my-2 gap-2">
       <div class="cell">
         <div class="box">
