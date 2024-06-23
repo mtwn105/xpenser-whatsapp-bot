@@ -2294,7 +2294,10 @@ export class SignupComponent implements OnInit, OnChanges {
           phonenumber,
           currency: this.selectedCurrencyCode
         }, res.token);
-        this.router.navigate(['/dashboard']);
+        // sleep for 2 seconds and then redirect to dashboard
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 2000);
       },
       error: (err: HttpErrorResponse) => {
         console.log(err);
