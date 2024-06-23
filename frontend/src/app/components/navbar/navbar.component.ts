@@ -13,6 +13,8 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent {
 
+  menuOpen = false;
+
   constructor(public authService: AuthService, private router: Router) { }
 
   logout() {

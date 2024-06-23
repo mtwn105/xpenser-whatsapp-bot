@@ -24,6 +24,18 @@ export class ExpensesComponent {
   pages: any = [];
 
   ngOnInit() {
+    this.getExpenses();
+  }
+
+
+
+  private getExpenses() {
+
+    this.expenseTable = [];
+    this.expenses = [];
+    this.pages = [];
+    this.selectedPage = 1;
+
     this.expenseService.getExpensesByUser(this.authService.loggedInUser.id).subscribe({
       next: (res: any) => {
 
@@ -50,9 +62,9 @@ export class ExpensesComponent {
 
         // this.expenses = res;
       }, error: (err) => {
-        this.toasterService.notify('Error fetching expenses', 'is-danger')
+        this.toasterService.notify('Error fetching expenses', 'is-danger');
       }
-    })
+    });
   }
 
   createExpense() {
@@ -78,5 +90,19 @@ export class ExpensesComponent {
     this.expenseTable = this.expenses[page - 1];
   }
 
+  goToExpense(expense: any) {
+    this.router.navigate(['/expense', expense._id]);
+  }
+
+  deleteExpense(expense: any) {
+    this.expenseService.deleteExpense(expense).subscribe({
+      next: (res) => {
+        this.toasterService.notify('Expense deleted successfully', 'is-success')
+        this.getExpenses();
+      }, error: (err) => {
+        this.toasterService.notify('Error deleting expense', 'is-danger')
+      }
+    })
+  }
 
 }

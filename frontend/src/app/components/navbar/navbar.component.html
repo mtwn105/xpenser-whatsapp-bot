@@ -3,10 +3,16 @@
     <a (click)="goToHome()" class="navbar-item has-text-weight-bold has-text-white">
       Xpenser
     </a>
-
+    <a (click)="menuOpen = !menuOpen" [class.is-active]="menuOpen" role="button" class="navbar-burger"
+      data-target="navMenu" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
   </div>
 
-  <div id="navbarBasicExample" class="navbar-menu">
+  <div [class.is-active]="menuOpen" id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
       <a (click)="goToHome()" *ngIf="authService.isLoggedIn" class="navbar-item">
         Home
@@ -15,20 +21,20 @@
         Expenses
       </a>
     </div>
-  </div>
-  <div class="navbar-end navbar-menu">
-    <app-avatar class="" *ngIf="authService.isLoggedIn" [name]="authService.loggedInUser?.name"></app-avatar>
-    <a *ngIf="authService.isLoggedIn" class="navbar-item ">
-      {{authService.loggedInUser?.name}}
-    </a>
-  </div>
-  <div class="navbar-end">
-    <div *ngIf="authService.isLoggedIn" class="navbar-item">
-      <div class="buttons">
-        <a (click)="logout()" class="button is-danger">
-          <strong>Sign out</strong>
-        </a>
+
+    <div [class.is-active]="menuOpen" class="navbar-end navbar-menu">
+      <app-avatar class="" *ngIf="authService.isLoggedIn" [name]="authService.loggedInUser?.name"></app-avatar>
+      <!-- <a *ngIf="authService.isLoggedIn" class="navbar-item ">
+        {{authService.loggedInUser?.name}}
+      </a> -->
+      <div *ngIf="authService.isLoggedIn" class="navbar-item">
+        <div class="buttons">
+          <a (click)="logout()" class="button is-danger">
+            <strong>Sign out</strong>
+          </a>
+        </div>
       </div>
     </div>
+
   </div>
 </nav>

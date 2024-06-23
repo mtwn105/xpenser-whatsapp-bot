@@ -32,12 +32,12 @@
               authService.loggedInUser?.currency}}</td>
             <td>
               <p class="buttons">
-                <button class="button is-small is-link">
+                <button (click)="goToExpense(expense)" class="button is-small is-link">
                   <span class="icon is-small">
                     <i class="fas fa-solid fa-pen-to-square"></i>
                   </span>
                 </button>
-                <button class="button is-small is-danger">
+                <button (click)="deleteExpense(expense)" class="button is-small is-danger ">
                   <span class="icon is-small">
                     <i class="fas fa-solid fa-trash"></i>
                   </span>

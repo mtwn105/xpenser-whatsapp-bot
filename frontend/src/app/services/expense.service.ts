@@ -18,7 +18,7 @@ export class ExpenseService {
   }
 
   deleteExpense(expense: any) {
-    return this.http.delete(environment.backendUrl + '/api/expenses', expense);
+    return this.http.delete(environment.backendUrl + '/api/expenses/' + expense._id, expense);
   }
   getExpensesByUser(userId: any) {
     return this.http.get(environment.backendUrl + '/api/expenses/user/' + userId);

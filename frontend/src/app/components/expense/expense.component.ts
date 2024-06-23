@@ -71,7 +71,7 @@ export class ExpenseComponent {
       this.expenseService.updateExpense(this.expense).subscribe({
         next: (res) => {
           this.toasterService.notify('Expense updated successfully', 'is-success')
-          this.router.navigate(['/dashboard'])
+          this.router.navigate(['/expenses'])
         }, error: (err) => {
           this.toasterService.notify('Error updating expense', 'is-danger')
         }
@@ -80,7 +80,7 @@ export class ExpenseComponent {
       this.expenseService.createExpense(this.expense).subscribe({
         next: (res) => {
           this.toasterService.notify('Expense created successfully', 'is-success')
-          this.router.navigate(['/dashboard'])
+          this.router.navigate(['/expenses'])
         }, error: (err) => {
           this.toasterService.notify('Error creating expense', 'is-danger')
         }
