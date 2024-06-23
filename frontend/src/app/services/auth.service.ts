@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,) { }
 
   sendOtp(phonenumber: string) {
     return this.http.post(environment.backendUrl + '/api/auth/otp/send', { phonenumber });

@@ -1,17 +1,10 @@
 <div class="container is-max-widescreen has-text-centered  p-4 mt-6">
   <p class="title my-auto has-text-primary is-size-1  ">
-    Expense
+    {{expense._id ? 'Edit Expense': 'Expense'}}
   </p>
   <p class="title is-size-2 mt-4 ">
-    Fill below details to log an expense
+    {{expense._id ? 'Fill below details to edit the expense': 'Fill below details to log an expense'}}
   </p>
-  <!-- <p class="title is-size-4 mt-2 ">
-    Get started by signing up
-  </p>
-  <button class=" button is-link is-large mt-4">Sign Up</button> -->
-
-
-
 </div>
 
 <div class="container is-max-desktop p-4 mt-2">

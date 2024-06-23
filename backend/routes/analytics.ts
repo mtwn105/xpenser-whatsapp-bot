@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const { User, Expense } = require("../schemas");
 const { getUser } = require("../jwt")
 const analyticsRouter = express.Router();
+const jsoncsv = require('json-csv')
+const { getInsight } = require("../ai")
 
 
 analyticsRouter.get("/dashboard/overview/:userId", async (req: Request, res: Response) => {
@@ -115,6 +117,53 @@ analyticsRouter.get("/dashboard/overview/:userId", async (req: Request, res: Res
     } else {
       dashboardData.averageExpenseChange = 100
     }
+
+    const last30Days = new Date();
+    last30Days.setDate(last30Days.getDate() - 29);
+    last30Days.setHours(0, 0, 0, 0);
+
+    const expenses = await Expense.find({ user: userId, date: { $gte: last30Days } }).sort({ date: -1 }).limit(100);
+    if (!expenses) {
+      return res.status(404).send({
+        error: "Expenses not found",
+        message: "Expenses not found"
+      });
+    }
+
+    if (expenses && expenses.length > 0) {
+
+      let result = await jsoncsv.buffered(expenses, {
+        fields: [
+          {
+            name: 'description', // uses dot notation
+            label: 'Description',
+          },
+          {
+            name: 'amount',
+            label: 'Amount',
+            transform: (d: any) => user.currency + '' + d,
+          },
+          {
+            name: 'category',
+            label: 'Category',
+          },
+          {
+            name: 'subCategory',
+            label: 'Sub Category',
+          },
+          {
+            name: 'date',
+            label: "Date",
+            transform: (d: any) => d.toISOString().split('T')[0]
+          },
+        ],
+      })
+
+      const aiResponse = await getInsight(result);
+      dashboardData.insights = aiResponse.insight
+
+    }
+
 
     return res.json(dashboardData);
   } catch (err) {
