@@ -2289,11 +2289,8 @@ export class SignupComponent implements OnInit, OnChanges {
       next: (res: any) => {
         this.toasterService.notify("You've been registered successfully.", 'is-success');
         console.log(res);
-        this.authService.loginUser({
-          name: this.name,
-          phonenumber,
-          currency: this.selectedCurrencyCode
-        }, res.token);
+        this.authService.loginUser(res.user, res.token);
+        // console.log(res.token);
         // sleep for 2 seconds and then redirect to dashboard
         setTimeout(() => {
           this.router.navigate(['/dashboard']);

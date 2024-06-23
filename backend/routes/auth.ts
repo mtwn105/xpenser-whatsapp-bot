@@ -104,7 +104,13 @@ authRouter.post("/otp/verify", async (req: Request, res: Response) => {
 
       return res.status(200).json({
         message: "OTP verified successfully",
-        token: token
+        token: token,
+        user: {
+          id: user._id,
+          name: user.name,
+          phonenumber: user.whatsappNumber,
+          currency: user.currency
+        }
       });
     } else {
       return res.status(400).json({
