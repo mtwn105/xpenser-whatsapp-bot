@@ -58,6 +58,16 @@ expensesRouter.get("/:expenseId", async (req: Request, res: Response) => {
       });
     }
 
+    const token = req.headers['authorization']?.split(" ")[1]
+    const authUser = getUser(token);
+
+    if (expense.user != authUser?.id && authUser?.role !== "admin") {
+      return res.status(403).send({
+        error: "You are not authorized",
+        message: "You are not authorized"
+      });
+    }
+
     return res.json(expense);
   } catch (err) {
     console.error(err);

@@ -6,6 +6,7 @@ import { DashboardService } from '../../services/dashboard.service';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData } from 'chart.js';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'app-dashboard',
@@ -65,16 +66,25 @@ export class DashboardComponent {
         display: true,
         position: 'top',
       },
-      // datalabels: {
-      //   formatter: (value, ctx) => {
-      //     if (ctx.chart.data.labels) {
-      //       return ctx.chart.data.labels[ctx.dataIndex];
-      //     }
-      //     return '';
-      //   },
-      // },
+      datalabels: {
+        formatter: (value, ctx) => {
+          let sum = 0;
+          let dataArr: any[] = ctx.chart.data.datasets[0].data;
+          dataArr.map((data: number) => {
+            sum += data;
+          });
+          let percentage = (value * 100 / sum).toFixed(2) + "%";
+          return percentage;
+        },
+        color: '#fff',
+      }
     },
     responsive: true,
+    elements: {
+      arc: {
+        borderWidth: 0,
+      }
+    }
     // maintainAspectRatio: true
   };
   categoryChartData: ChartData<'pie', number[], string | string[]> = {
@@ -89,31 +99,17 @@ export class DashboardComponent {
         ],
         backgroundColor: [
           '#00d1b2',
-
-        ]
+          '#7585ff',
+          '#66d1ff',
+          '#48c78e',
+          '#ffb70f',
+          '#ff6685',
+        ],
       }
 
     ],
 
   };
-
-  getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  // Generate random colors for the chart
-  getRandomColors(numColors: number) {
-    const colors = [];
-    for (let i = 0; i < numColors; i++) {
-      colors.push(this.getRandomColor());
-    }
-    return colors;
-  }
 
   constructor(private router: Router, public authService: AuthService, private toasterService: ToasterService, private dashboardService: DashboardService) { }
 
@@ -153,7 +149,6 @@ export class DashboardComponent {
           // this. = data;
           this.categoryChartData.labels = data.labels;
           this.categoryChartData.datasets[0].data = data.data;
-          this.categoryChartData.datasets[0].backgroundColor = this.getRandomColors(data.data.length);
           console.log(data);
           // console.log(this.expenseChartOptions);
           this.chart?.map((chart) => {

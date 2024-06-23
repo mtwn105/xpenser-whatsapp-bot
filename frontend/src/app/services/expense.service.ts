@@ -14,7 +14,7 @@ export class ExpenseService {
   }
 
   updateExpense(expense: any) {
-    return this.http.put(environment.backendUrl + '/api/expenses', expense);
+    return this.http.put(environment.backendUrl + '/api/expenses/' + expense._id, expense);
   }
 
   deleteExpense(expense: any) {

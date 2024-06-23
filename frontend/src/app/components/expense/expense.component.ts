@@ -22,7 +22,7 @@ export class ExpenseComponent {
     _id: null,
     description: '',
     amount: 0,
-    date: '',
+    date: new Date(),
     user: ''
   }
 
@@ -36,7 +36,7 @@ export class ExpenseComponent {
       _id: new FormControl(null),
       description: new FormControl('', [Validators.required]),
       amount: new FormControl(null, [Validators.required]),
-      date: new FormControl('', [Validators.required]),
+      date: new FormControl(new Date(), [Validators.required]),
       user: new FormControl(authService.loggedInUser?.id, [Validators.required]),
     })
 
@@ -44,6 +44,7 @@ export class ExpenseComponent {
       this.expenseService.getExpense(activatedRoute.snapshot.params['id']).subscribe({
         next: (res) => {
           this.expense = res;
+          this.expense.date = this.expense.date.split("T")[0];
           this.expenseForm.patchValue(this.expense);
         }, error: (err) => {
           this.toasterService.notify('Error fetching expense', 'is-danger')
