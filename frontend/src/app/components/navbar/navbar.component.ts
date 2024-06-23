@@ -18,15 +18,18 @@ export class NavbarComponent {
   constructor(public authService: AuthService, private router: Router) { }
 
   logout() {
+    this.menuOpen = false;
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/signin']);
   }
 
   goToHome() {
+    this.menuOpen = false;
     this.router.navigate(['/dashboard']);
   }
 
   goToExpenses() {
+    this.menuOpen = false;
     this.router.navigate(['/expenses']);
   }
 

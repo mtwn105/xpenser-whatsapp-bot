@@ -30,14 +30,6 @@ analyticsRouter.get("/dashboard/overview/:userId", async (req: Request, res: Res
       });
     }
 
-    // const expenses = await Expense.find({ user: userId }).sort({ date: -1 })
-    // if (!expenses) {
-    //   return res.status(404).send({
-    //     error: "Expenses not found",
-    //     message: "Expenses not found"
-    //   });
-    // }
-
     const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
     const endOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0, 23, 59, 59, 999);
 
@@ -71,9 +63,6 @@ analyticsRouter.get("/dashboard/overview/:userId", async (req: Request, res: Res
     } else {
       dashboardData.totalPreviousMonth = 0
     }
-
-    // console.log(thisMonthExpenses)
-    // console.log(previousMonthExpenses)
 
     let totalChange = 100
     if (dashboardData.totalPreviousMonth > 0) {
@@ -157,13 +146,6 @@ analyticsRouter.get("/dashboard/expense-chart/:userId", async (req: Request, res
       });
     }
 
-    // const expenses = await Expense.find({ user: userId }).sort({ date: -1 })
-    // if (!expenses) {
-    //   return res.status(404).send({
-    //     error: "Expenses not found",
-    //     message: "Expenses not found"
-    //   });
-    // }
     const today = new Date()
     const last30Days = new Date();
     last30Days.setDate(last30Days.getDate() - 29);
@@ -254,13 +236,6 @@ analyticsRouter.get("/dashboard/category-chart/:userId", async (req: Request, re
       });
     }
 
-    // const expenses = await Expense.find({ user: userId }).sort({ date: -1 })
-    // if (!expenses) {
-    //   return res.status(404).send({
-    //     error: "Expenses not found",
-    //     message: "Expenses not found"
-    //   });
-    // }
     const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
     const endOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0, 23, 59, 59, 999);
 

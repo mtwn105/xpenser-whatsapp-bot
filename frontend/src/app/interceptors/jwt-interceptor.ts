@@ -25,9 +25,16 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((err: any, caught: Observable<HttpEvent<any>>) => {
 
       if (err instanceof HttpErrorResponse) {
-        if (err.status === 401) {
+        if (err.status === 403) {
           // auto logout if 401 response returned from api
           toasterService.notify('You are not authorized to access this page. Please login again.', 'is-danger')
+          authService.logout();
+          router.navigate(['/signin']);
+
+        }
+        if (err.status === 401) {
+          // auto logout if 401 response returned from api
+          toasterService.notify('Your session has expired. Please login again.', 'is-danger')
           authService.logout();
           router.navigate(['/signin']);
 

@@ -5,6 +5,73 @@ const { User, Expense } = require("../schemas");
 const { getUser } = require("../jwt")
 const expensesRouter = express.Router();
 const { getCategories } = require("../ai")
+const jsoncsv = require('json-csv')
+
+expensesRouter.get("/user/csv/:userId", async (req: Request, res: Response) => {
+
+  try {
+    const userId = req.params.userId;
+
+    const token = req.headers['authorization']?.split(" ")[1]
+    const authUser = getUser(token);
+
+    if (userId != authUser?.id && authUser?.role !== "admin") {
+      return res.status(403).send({
+        error: "You are not authorized",
+        message: "You are not authorized"
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).send({
+        error: "User not found",
+        message: "User not found"
+      });
+    }
+
+    const expenses = await Expense.find({ user: userId }).sort({ date: -1 }).limit(100);
+    if (!expenses) {
+      return res.status(404).send({
+        error: "Expenses not found",
+        message: "Expenses not found"
+      });
+    }
+
+    let result = await jsoncsv.buffered(expenses, {
+      fields: [
+        {
+          name: 'description', // uses dot notation
+          label: 'Description',
+        },
+        {
+          name: 'amount',
+          label: 'Amount',
+          transform: (d: any) => user.currency + '' + d,
+        },
+        {
+          name: 'category',
+          label: 'Category',
+        },
+        {
+          name: 'subCategory',
+          label: 'Sub Category',
+        },
+        {
+          name: 'date',
+          label: "Date",
+          transform: (d: any) => d.toISOString().split('T')[0]
+        },
+      ],
+    })
+
+
+    return res.send(result);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(err);
+  }
+});
 
 expensesRouter.get("/user/:userId", async (req: Request, res: Response) => {
 

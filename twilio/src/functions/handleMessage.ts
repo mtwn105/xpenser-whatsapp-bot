@@ -73,24 +73,26 @@ export const handler: ServerlessFunctionSignature = async function (
   const apiKey = context.GEMINI_API_KEY;
   const genAI = new GoogleGenerativeAI(apiKey);
 
-  const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
-    systemInstruction: `Detect intent in one word out of these:\n\nspend, analytics, other\n\nspend - related to logging a new expense/spend and nothing else. \nanalytics - related to the analysis of past spends/expenses\nother - any other apart from two\n\nIf it is a spend, \n\nthen it should contain the following stuff - what was the expense (i.e. description), amount, date, then you will detect the category and subcategory from below\n1. Housing - Rent, Taxes, Insurance, Utilities, Repairs, Improvement, Fees\n2. Transportation - Payments, Fuel, Insurance, Repairs, Public, Parking, Tolls, Licensing\n3. Food - Groceries, Dining, Coffee, Delivery, Snacks\n4. Utilities - Electricity, Water, Gas, Internet, Cable, Trash, Phone\n5. Health - Insurance, Dental, Vision, Medical, Prescriptions, Medications, Gym, Wellness\n6. Personal - Haircuts, Skincare, Makeup, Hygiene, Clothing\n7. Education - Tuition, Books, Loans, Courses, Activities\n9. Entertainment - Subscriptions, Movies, Concerts, Hobbies, Books\n10. Travel - Flights, Accommodation, Transportation, Insurance, Food, Activities, Souvenirs\n12. Savings - Emergency, Retirement, Accounts, Investments, Education\n13. Miscellaneous - Gifts, Pet, Office, Services, Subscriptions\n\nthe date is in YYYY-MM-DD format. default value - today - ${new Date().getFullYear()}-${new Date().getUTCMonth() + 1}-${new Date().getDate()}\n\ngive output as \n\n{\n  \"description\": \"description of the expense\",\n  \"amount\": 100,\n  \"category\": \"main category of the expense\",\n  \"subCategory\": \"subcategory of the expense\",\n  \"date\": \"date of the purchase in format ISO\"\n}`,
-  });
-
-  const generationConfig = {
-    temperature: 0.6,
-    topP: 0.95,
-    topK: 64,
-    maxOutputTokens: 8192,
-    responseMimeType: "application/json",
-  };
-
-  const chatSession = model.startChat({
-    generationConfig
-  });
 
   try {
+
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction: `Detect intent in one word out of these:\n\nspend, analytics, other\n\nspend - related to logging a new expense/spend and nothing else. \nanalytics - related to the past spends/expenses or their analysis\nother - any other apart from two\n\nIf it is a spend, \n\nthen it should contain the following stuff - what was the expense (i.e. description), amount, date, then you will detect the category and subcategory from below\n1. Housing - Rent, Taxes, Insurance, Utilities, Repairs, Improvement, Fees\n2. Transportation - Payments, Fuel, Insurance, Repairs, Public, Parking, Tolls, Licensing\n3. Food - Groceries, Dining, Coffee, Delivery, Snacks\n4. Utilities - Electricity, Water, Gas, Internet, Cable, Trash, Phone\n5. Health - Insurance, Dental, Vision, Medical, Prescriptions, Medications, Gym, Wellness\n6. Personal - Haircuts, Skincare, Makeup, Hygiene, Clothing\n7. Education - Tuition, Books, Loans, Courses, Activities\n9. Entertainment - Subscriptions, Movies, Concerts, Hobbies, Books\n10. Travel - Flights, Accommodation, Transportation, Insurance, Food, Activities, Souvenirs\n12. Savings - Emergency, Retirement, Accounts, Investments, Education\n13. Miscellaneous - Gifts, Pet, Office, Services, Subscriptions\n\nthe date is in YYYY-MM-DD format. default value - today - ${new Date().getFullYear()}-${new Date().getUTCMonth() + 1}-${new Date().getDate()}\n\ngive output as \n\n{\n  \"description\": \"description of the expense\",\n  \"amount\": 100,\n  \"category\": \"main category of the expense\",\n  \"subCategory\": \"subcategory of the expense\",\n  \"date\": \"date of the purchase in format ISO\"\n}`,
+    });
+
+    const generationConfig = {
+      temperature: 0.6,
+      topP: 0.95,
+      topK: 64,
+      maxOutputTokens: 8192,
+      responseMimeType: "application/json",
+    };
+
+    const chatSession = model.startChat({
+      generationConfig
+    });
 
     const result = await chatSession.sendMessage(event.Body);
     const aiResponse = result.response.text()
@@ -101,10 +103,57 @@ export const handler: ServerlessFunctionSignature = async function (
     try {
       const aiResponseJson: any = JSON.parse(aiResponse);
 
-      if (aiResponseJson?.intent == 'other' || aiResponseJson?.intent == 'analytics') {
+      if (aiResponseJson?.intent == 'other') {
         twiml.message("Please ask about spends you have done or spend you want to log.");
         callback(null, twiml);
         return;
+      } else if (aiResponseJson?.intent == 'analytics') {
+
+        try {
+
+          // Get expense as text
+          const expenseCsv = await axios.get(xpenserUrl + "/api/expenses/user/csv/" + user._id, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + context.XPENSER_TOKEN
+            }
+          });
+
+          const expenseCsvText = expenseCsv.data;
+
+          console.log(expenseCsvText)
+
+          const analyticsModel = genAI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            systemInstruction: "Based on below expenses done by user give answer to user. Optimize as WhatsApp message reply and add emojis.\n\nExpense History:\n" + expenseCsvText,
+          });
+
+          const analyticsGenerationConfig = {
+            temperature: 0.6,
+            topP: 0.95,
+            topK: 64,
+            maxOutputTokens: 8192,
+            responseMimeType: "text/plain",
+          };
+
+          const analyticsChatSession = analyticsModel.startChat({
+            analyticsGenerationConfig
+          });
+
+          const analyticsAiResult = await analyticsChatSession.sendMessage(event.Body);
+          const analyticsAiResponse = analyticsAiResult.response.text()
+
+          twiml.message(analyticsAiResponse);
+
+          callback(null, twiml);
+          return;
+        } catch (error) {
+          console.log("Error : ", error);
+          twiml.message("Please ask about spends you have done or spend you want to log.");
+          callback(null, twiml);
+          return;
+        }
       }
 
       if (!aiResponseJson.description || aiResponseJson.description == "" || !aiResponseJson.amount || aiResponseJson.amount == 0 || !aiResponseJson.date || aiResponseJson.date == "" || !aiResponseJson.category || aiResponseJson.category == "" || !aiResponseJson.subCategory || aiResponseJson.subCategory == "") {
