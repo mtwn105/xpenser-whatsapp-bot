@@ -2,6 +2,8 @@
 ## AI Expense Manager with WhatsApp 
 ### Built using Twilio & Gemini AI
 
+## 🥳 Winner of Twilio x Dev.To Hackathon - [https://dev.to/devteam/congrats-to-the-twilio-challenge-winners-2b1n](https://dev.to/devteam/congrats-to-the-twilio-challenge-winners-2b1n)
+
 ![Xpenser2](https://github.com/mtwn105/xpenser-whatsapp-bot/assets/12975481/8d0d1c19-a0de-4b94-9345-850ba873d6fa)
 
 ## Demo
